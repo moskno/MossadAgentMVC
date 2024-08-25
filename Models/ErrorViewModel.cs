@@ -1,4 +1,4 @@
-namespace MossafAgentMVC.Models
+namespace MossadAgentMVC.Models
 {
     public class ErrorViewModel
     {

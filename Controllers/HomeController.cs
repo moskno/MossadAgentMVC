@@ -1,5 +1,5 @@
 using Microsoft.AspNetCore.Mvc;
-using MossafAgentMVC.Models;
+using MossadAgentMVC.Models;
 using System.Diagnostics;
 
 namespace MossafAgentMVC.Controllers
