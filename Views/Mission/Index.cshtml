@@ -1,0 +1,44 @@
+﻿@model IEnumerable<MossadAgentMVC.Models.MissionDetailsViewModel>
+
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Mission List</title>
+</head>
+<body>
+    <h1>Mission List</h1>
+    <table>
+        <thead>
+            <tr>
+                <th>ID</th>
+                <th>Agent Nickname</th>
+                <th>Agent Location</th>
+                <th>Target Name</th>
+                <th>Target Role</th>
+                <th>Target Location</th>
+                <th>Distance</th>
+                <th>Time Left</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var mission in Model)
+            {
+                <tr>
+                    <td>@mission.MissionId</td>
+                    <td>@mission.AgentNickname</td>
+                    <td>@mission.AgentLocation.x, @mission.AgentLocation.y</td>
+                    <td>@mission.TargetName</td>
+                    <td>@mission.TargetRole</td>
+                    <td>@mission.TargetLocation.x, @mission.TargetLocation.y</td>
+                    <td>@mission.Distance</td>
+                    <td>@mission.TimeLeft</td>
+                    <td>
+                        <a href="@Url.Action("Details", "Mission", new { id = mission.MissionId })">Details</a>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</body>
+</html>

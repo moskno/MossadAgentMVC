@@ -1,4 +1,4 @@
-﻿using MossadAgentAPI.Enums;
+﻿using MossadAgentMVC.Enums;
 using System.ComponentModel.DataAnnotations;
 
 namespace MossadAgentMVC.Models

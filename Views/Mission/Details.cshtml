@@ -1,0 +1,30 @@
+﻿@model MossadAgentMVC.Models.MissionDetailsViewModel
+
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Mission Details</title>
+</head>
+<body>
+    <h1>Mission Details</h1>
+    <p><strong>ID:</strong> @Model.MissionId</p>
+    <p><strong>Time Left:</strong> @Model.TimeLeft</p>
+    <p><strong>Execution Time:</strong> @Model.ExecutionTime</p>
+    <p><strong>Status:</strong> @Model.MissionStatus</p>
+
+    <h2>Agent Details</h2>
+    <p><strong>Nickname:</strong> @Model.AgentNickname</p>
+    <p><strong>Location:</strong> @Model.AgentLocation.x, @Model.AgentLocation.y</p>
+    <p><strong>Status:</strong> @Model.AgentStatus</p>
+
+    <h2>Target Details</h2>
+    <p><strong>Name:</strong> @Model.TargetName</p>
+    <p><strong>Role:</strong> @Model.TargetRole</p>
+    <p><strong>Location:</strong> @Model.TargetLocation.x, @Model.TargetLocation.y</p>
+    <p><strong>Status:</strong> @Model.TargetStatus</p>
+
+    <p><strong>Distance between Agent and Target:</strong> @Model.Distance km</p>
+
+    <a href="@Url.Action("Index", "Mission")">Back to Mission List</a>
+</body>
+</html>

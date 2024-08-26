@@ -1,30 +1,47 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using MossadAgentMVC.Models;
+using Newtonsoft.Json;
+using System.Collections.Generic;
+using System.Net.Http;
+using System.Threading.Tasks;
 
 namespace MossadAgentMVC.Controllers
 {
     public class MissionController : Controller
     {
-        Uri baseAddress = new Uri("http://localhost:44374/api");
         private readonly HttpClient _httpClient;
 
-        public MissionController()
+        public MissionController(IConfiguration configuration, HttpClient httpClient)
         {
-            _httpClient = new HttpClient();
-            _httpClient.BaseAddress = baseAddress;
+            _httpClient = httpClient;
+            _httpClient.BaseAddress = new Uri(configuration["ApiBaseAddress"]);
         }
+
         [HttpGet]
         public async Task<IActionResult> Index()
-        {
-            List<Mission> missionLIst = new List<Mission>();
-            HttpResponseMessage response = _httpClient.GetAsync(_httpClient.BaseAddress + "/mission/Get");
+        {   
+            List<Mission> missionList = new List<Mission>();
+            HttpResponseMessage response = await _httpClient.GetAsync("mission/Get");
 
             if (response.IsSuccessStatusCode)
             {
-                string data = response.Content.ReadAsStringAsync().Result;
-                missionLIst = JsonConvert.DeserializeObject<List<Mission>>(data);
+                string data = await response.Content.ReadAsStringAsync();
+                missionList = JsonConvert.DeserializeObject<List<Mission>>(data);
             }
-            return View(missionLIst);
+            return View(missionList);
+        }
+
+        [HttpGet]
+        public async Task<IActionResult> Details(int id)
+        {
+            MissionDetails missionDetails = null;
+            HttpResponseMessage response = await _httpClient.GetAsync($"mission/GetDetails/{id}");
+            if (response.IsSuccessStatusCode)
+            {
+                string data = await response.Content.ReadAsStringAsync();
+                missionDetails = JsonConvert.DeserializeObject<MissionDetails> (data);
+            }
+            return View(missionDetails);
         }
     }
 }

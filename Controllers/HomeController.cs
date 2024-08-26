@@ -2,7 +2,7 @@ using Microsoft.AspNetCore.Mvc;
 using MossadAgentMVC.Models;
 using System.Diagnostics;
 
-namespace MossafAgentMVC.Controllers
+namespace MossadAgentMVC.Controllers
 {
     public class HomeController : Controller
     {
