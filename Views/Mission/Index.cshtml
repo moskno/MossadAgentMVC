@@ -1,44 +1,33 @@
-﻿@model IEnumerable<MossadAgentMVC.Models.MissionDetailsViewModel>
+﻿@model List<MissionDetails>
 
-<!DOCTYPE html>
-<html>
-<head>
-    <title>Mission List</title>
-</head>
-<body>
-    <h1>Mission List</h1>
-    <table>
-        <thead>
-            <tr>
-                <th>ID</th>
-                <th>Agent Nickname</th>
-                <th>Agent Location</th>
-                <th>Target Name</th>
-                <th>Target Role</th>
-                <th>Target Location</th>
-                <th>Distance</th>
-                <th>Time Left</th>
-                <th>Actions</th>
+<h1>Mission List</h1>
+
+<table style="width:100%; border-collapse: collapse;">
+    <thead>
+        <tr style="border-bottom: 2px solid #ddd;">
+            <th style="padding: 10px;">Agent Nickname</th>
+            <th style="padding: 10px;">Agent Location</th>
+            <th style="padding: 10px;">Target Name</th>
+            <th style="padding: 10px;">Target Role</th>
+            <th style="padding: 10px;">Target Location</th>
+            <th style="padding: 10px;">Distance</th>
+            <th style="padding: 10px;">Time Left</th>
+            <th style="padding: 10px;">Details</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var mission in Model)
+        {
+            <tr style="border-bottom: 1px solid #ddd;">
+                <td style="padding: 10px;">@mission.AgentNickname</td>
+                <td style="padding: 10px;">@mission.AgentLocation.x, @mission.AgentLocation.y</td>
+                <td style="padding: 10px;">@mission.TargetName</td>
+                <td style="padding: 10px;">@mission.TargetRole</td>
+                <td style="padding: 10px;">@mission.TargetLocation.x, @mission.TargetLocation.y</td>
+                <td style="padding: 10px;">@mission.Distance.ToString("F3")</td>
+                <td style="padding: 10px;">@mission.TimeLeft</td>
+                <td style="padding: 10px;"><a href="@Url.Action("Details", new { id = mission.MissionId })">View Details</a></td>
             </tr>
-        </thead>
-        <tbody>
-            @foreach (var mission in Model)
-            {
-                <tr>
-                    <td>@mission.MissionId</td>
-                    <td>@mission.AgentNickname</td>
-                    <td>@mission.AgentLocation.x, @mission.AgentLocation.y</td>
-                    <td>@mission.TargetName</td>
-                    <td>@mission.TargetRole</td>
-                    <td>@mission.TargetLocation.x, @mission.TargetLocation.y</td>
-                    <td>@mission.Distance</td>
-                    <td>@mission.TimeLeft</td>
-                    <td>
-                        <a href="@Url.Action("Details", "Mission", new { id = mission.MissionId })">Details</a>
-                    </td>
-                </tr>
-            }
-        </tbody>
-    </table>
-</body>
-</html>
+        }
+    </tbody>
+</table>

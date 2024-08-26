@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using MossadAgentMVC.Models;
 using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
 using System.Collections.Generic;
 using System.Net.Http;
 using System.Threading.Tasks;
@@ -19,14 +20,19 @@ namespace MossadAgentMVC.Controllers
 
         [HttpGet]
         public async Task<IActionResult> Index()
-        {   
-            List<Mission> missionList = new List<Mission>();
-            HttpResponseMessage response = await _httpClient.GetAsync("mission/Get");
+        {
+            List<MissionDetails> missionList = new List<MissionDetails>();
+            HttpResponseMessage response = await _httpClient.GetAsync("mission/details");
 
             if (response.IsSuccessStatusCode)
             {
                 string data = await response.Content.ReadAsStringAsync();
-                missionList = JsonConvert.DeserializeObject<List<Mission>>(data);
+                var responseObject = JsonConvert.DeserializeObject<JObject>(data);
+
+                if (responseObject != null && responseObject["message"] != null && responseObject["message"]["missionDetails"] != null)
+                {
+                    missionList = JsonConvert.DeserializeObject<List<MissionDetails>>(responseObject["message"]["missionDetails"].ToString());
+                }
             }
             return View(missionList);
         }
@@ -35,11 +41,20 @@ namespace MossadAgentMVC.Controllers
         public async Task<IActionResult> Details(int id)
         {
             MissionDetails missionDetails = null;
-            HttpResponseMessage response = await _httpClient.GetAsync($"mission/GetDetails/{id}");
+            HttpResponseMessage response = await _httpClient.GetAsync($"mission/details/{id}");
+
             if (response.IsSuccessStatusCode)
             {
                 string data = await response.Content.ReadAsStringAsync();
-                missionDetails = JsonConvert.DeserializeObject<MissionDetails> (data);
+                var responseObject = JsonConvert.DeserializeObject<JObject>(data);
+                if (responseObject["missionDetails"] != null)
+                {
+                    missionDetails = responseObject["missionDetails"].ToObject<MissionDetails>();
+                }
+            }
+            if (missionDetails == null)
+            {
+                return NotFound();
             }
             return View(missionDetails);
         }
