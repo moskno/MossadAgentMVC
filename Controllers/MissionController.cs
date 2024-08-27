@@ -5,6 +5,8 @@ using Newtonsoft.Json.Linq;
 using System.Collections.Generic;
 using System.Net.Http;
 using System.Threading.Tasks;
+using System;
+using System.Text.Json.Nodes;
 
 namespace MossadAgentMVC.Controllers
 {
@@ -42,21 +44,27 @@ namespace MossadAgentMVC.Controllers
         {
             MissionDetails missionDetails = null;
             HttpResponseMessage response = await _httpClient.GetAsync($"mission/details/{id}");
-
+                
             if (response.IsSuccessStatusCode)
             {
                 string data = await response.Content.ReadAsStringAsync();
-                var responseObject = JsonConvert.DeserializeObject<JObject>(data);
-                if (responseObject["missionDetails"] != null)
+                var jsonObject = JsonConvert.DeserializeObject<JObject>(data);
+
+                if (jsonObject != null &&
+                    jsonObject["message"] != null &&
+                    jsonObject["message"]["missionDetails"] != null)
                 {
-                    missionDetails = responseObject["missionDetails"].ToObject<MissionDetails>();
+                    missionDetails = jsonObject["message"]["missionDetails"].ToObject<MissionDetails>();
                 }
             }
+
             if (missionDetails == null)
             {
                 return NotFound();
             }
+
             return View(missionDetails);
         }
+
     }
 }
